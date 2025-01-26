@@ -31,24 +31,25 @@ def main():
             st.subheader("Your PDFs")
             pdf_doc = st.file_uploader("Upload PDF and click process", type="pdf", accept_multiple_files=False) # solo se guardara si es pdf
 
-        retriever = None
-        if pdf_doc: 
+        # retriever = None
+        if pdf_doc and 'retriever' not in st.session_state: 
+            print("ENTRO AL IF")
             pdf_bytes = io.BytesIO(pdf_doc.getvalue())
             
             texts,images = process_pdf(pdf_bytes)
 
-            retriever = create_retriever(texts,images)
+            st.session_state.retriever = create_retriever(texts,images)
 
             st.sidebar.success("PDF processed successfully!")
 
         # Formulario de entrada
         user_input = st.chat_input("Write here your message")
 
-        if user_input and retriever:
+        if user_input and 'retriever' in st.session_state:
             # RAG pipeline
             chain = (
                 {
-                    "context": retriever | RunnableLambda(split_image_text_types),
+                    "context": st.session_state.retriever | RunnableLambda(split_image_text_types),
                     "question": RunnablePassthrough(),
                 }
                 | RunnableLambda(prompt_func)
@@ -59,7 +60,7 @@ def main():
             st.session_state.message_history.append({"type": "user", "content": user_input})
             st.session_state.message_history.append({"type": "ai", "content": response})  
 
-        if user_input and not retriever:
+        if user_input and 'retriever' not in st.session_state:
             prompt = PromptTemplate(
                 template=(
                 """You are an AI assistant designed to answer questions about a document. 
