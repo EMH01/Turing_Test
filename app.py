@@ -58,6 +58,9 @@ def main():
             response = chain.invoke(user_input)
             st.session_state.message_history.append({"type": "user", "content": user_input})
             st.session_state.message_history.append({"type": "ai", "content": response})  
+        
+        if pdf_doc is None and 'retriever' in st.session_state: # manejar cuando se quita un archivo luego de haberlo subido
+            del st.session_state.retriever
 
         if user_input and 'retriever' not in st.session_state:
             prompt = PromptTemplate(
