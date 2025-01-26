@@ -1,22 +1,11 @@
 python-dotenv
 pymupdf
-tiktoken
 openai
 streamlit
 langchain-core
 langchain-openai
 langchain-community
 langchain
-faiss-cpu
-langchain-experimental
-unstructured[all-docs]
-pillow 
-pydantic 
-lxml 
-chromadb 
-open_clip_torch
-torch
-langchain-openai
-nltk
-numpy
+pymupdf4llm
+langchain-text-splitters
 
