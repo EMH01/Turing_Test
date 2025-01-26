@@ -33,7 +33,6 @@ def main():
 
         # retriever = None
         if pdf_doc and 'retriever' not in st.session_state: 
-            print("ENTRO AL IF")
             pdf_bytes = io.BytesIO(pdf_doc.getvalue())
             
             texts,images = process_pdf(pdf_bytes)
